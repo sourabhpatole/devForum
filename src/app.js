@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-app.use((red, res) => {
+app.use("/", (red, res) => {
   res.send("Hello from the Node js server!!");
 });
 app.use("/hello", (req, res) => {
