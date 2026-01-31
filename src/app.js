@@ -62,14 +62,29 @@ app.delete("/user", async (req, res) => {
   }
 });
 // update data of the user
+// app.patch("/user", async (req, res) => {
+//   let userId = req.body.userId;
+//   let data = req.body;
+//   console.log(JSON.stringify(data));
+
+//   try {
+//     const user = await User.findByIdAndUpdate(userId, data);
+//     console.log(user);
+
+//     res.status(200).send("User update successfully");
+//   } catch (error) {
+//     res.status(400).send("Something went wrong");
+//   }
+// });
 app.patch("/user", async (req, res) => {
-  let userId = req.body.userId;
+  let email = req.body.emailId;
   let data = req.body;
+  res.send("data update successful");
   try {
-    await User.findByIdAndUpdate({ _id: userId }, data);
-    res.status(200).send("User update successfully");
+    let user = await User.findOneAndUpdate({ emailId: email }, data);
+    console.log(user);
   } catch (error) {
-    res.status(400).send("Something went wrong");
+    res.status(400).send("Something went wrong!");
   }
 });
 connectDB()
