@@ -77,14 +77,19 @@ app.delete("/user", async (req, res) => {
 //   }
 // });
 app.patch("/user", async (req, res) => {
-  let email = req.body.emailId;
+  let userId = req.body.userId;
   let data = req.body;
-  res.send("data update successful");
   try {
-    let user = await User.findOneAndUpdate({ emailId: email }, data);
+    let user = await User.findByIdAndUpdate(userId, data, {
+      // to check each call validator will run
+      returnDocument: "after",
+      runValidators: true,
+    });
+    res.send("data update successful");
+
     console.log(user);
   } catch (error) {
-    res.status(400).send("Something went wrong!");
+    res.status(400).send("Update Failed " + error.message);
   }
 });
 connectDB()
