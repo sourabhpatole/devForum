@@ -1,25 +1,30 @@
 const express = require("express");
 const connectDB = require("./config/database");
 const User = require("./models/user");
+const { validateSignUpData } = require("./utils/validation");
 const app = express();
 app.use(express.json());
 app.post("/signup", async (req, res) => {
-  // console.log(req.body);
-  // const userObj = {
-  //   firstName: "MS",
-  //   lastName: "Dhoni",
-  //   emailId: "msdhoni@outlook.com",
-  //   password: "dhoni@123",
-  // };
-  // creating a new Instance of the user model
-
-  const user = new User(req.body);
   try {
+    // validation data
+    validateSignUpData(req);
+    // encrypt the password
+
+    // console.log(req.body);
+    // const userObj = {
+    //   firstName: "MS",
+    //   lastName: "Dhoni",
+    //   emailId: "msdhoni@outlook.com",
+    //   password: "dhoni@123",
+    // };
+    // creating a new Instance of the user model
+
+    const user = new User(req.body);
     // creating new instance of the User model
     await user.save();
     res.send("User added successfully");
   } catch (error) {
-    res.status(400).send("error create user " + error.message);
+    res.status(400).send("ERR : " + error.message);
   }
 });
 // get user by email
