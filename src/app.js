@@ -76,10 +76,31 @@ app.delete("/user", async (req, res) => {
 //     res.status(400).send("Something went wrong");
 //   }
 // });
-app.patch("/user", async (req, res) => {
-  let userId = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+  let userId = req.params?.userId;
   let data = req.body;
   try {
+    const ALLOWED_UPDATES = [
+      // "firstName",
+      // "lastName",
+      "password",
+      "age",
+      "gender",
+      "photoUrl",
+      "about",
+      "skills",
+    ];
+
+    const isUpdateAllowed = Object.keys(data).every((update) => {
+      return ALLOWED_UPDATES.includes(update);
+    });
+
+    if (!isUpdateAllowed) {
+      return res.status(400).send("Invalid updates!");
+    }
+    if (data?.skills.length > 10) {
+      throw new Error("Skills not be more than 10");
+    }
     let user = await User.findByIdAndUpdate(userId, data, {
       // to check each call validator will run
       returnDocument: "after",
