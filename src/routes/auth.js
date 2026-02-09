@@ -1,8 +1,12 @@
 const express = require("express");
-const { validateSignUpData } = require("../utils/validation");
+const {
+  validateSignUpData,
+  validateForgotPassword,
+} = require("../utils/validation");
 
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
+const { userAuth } = require("../middleware/auth");
 const authRouter = express.Router();
 authRouter.post("/signup", async (req, res) => {
   try {
@@ -59,5 +63,35 @@ authRouter.post("/login", async (req, res) => {
     res.status(400).send("ERROR : " + error.message);
   }
 });
+authRouter.post("/logout", (req, res) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+  });
+  res.send("logout successful");
+});
+authRouter.patch("/forgotPassword", userAuth, async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const user = req.user;
+    console.log(user);
 
+    // Validate old password
+    const isPasswordValid = await user.validatePassword(oldPassword);
+    if (!isPasswordValid) {
+      return res.status(400).send("ERROR: Old password is incorrect");
+    }
+
+    // Validate new password
+    // validateForgotPassword(oldPassword, newPassword);
+
+    // Hash new password and update
+    const passwordHash = await bcrypt.hash(newPassword, 10);
+    user.password = passwordHash;
+    await user.save();
+
+    res.status(200).send("Password updated successfully");
+  } catch (error) {
+    res.status(400).send("ERROR: " + error.message);
+  }
+});
 module.exports = authRouter;
