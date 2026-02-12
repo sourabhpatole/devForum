@@ -31,9 +31,9 @@ connectionReqSchema.index({ fromUserId: 1, toUserId: 1 });
 //   }
 //   next();
 // });
-const ConnectionRequestModel = new mongoose.model(
+const ConnectionRequest = new mongoose.model(
   "ConnectionRequest",
   connectionReqSchema,
 );
 
-module.exports = ConnectionRequestModel;
+module.exports = ConnectionRequest;

@@ -1,11 +1,11 @@
 const express = require("express");
 const requestRouter = express.Router();
 
-const ConnectionRequest = require("../models/ConnectionReq");
 const User = require("../models/user");
 
 // const sendEmail = require("../utils/sendEmail");
 const { userAuth } = require("../middleware/auth");
+const ConnectionRequest = require("../models/connectionReq");
 
 requestRouter.post(
   "/request/send/:status/:toUserId",
