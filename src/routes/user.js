@@ -60,6 +60,7 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     // alredy send the connection request
 
     const loggedInUser = req.user;
+    console.log(loggedInUser);
   } catch (error) {
     res.status(400).json({ message: error.message });
   }

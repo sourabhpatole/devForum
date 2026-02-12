@@ -72,6 +72,9 @@ requestRouter.post(
     try {
       const loggedInUser = req.user;
       const { status, requestId } = req.params;
+      console.log(loggedInUser._id.toString());
+      console.log(status);
+      console.log(requestId);
 
       const allowedStatus = ["accepted", "rejected"];
       if (!allowedStatus.includes(status)) {
@@ -80,7 +83,7 @@ requestRouter.post(
 
       const connectionRequest = await ConnectionRequest.findOne({
         _id: requestId,
-        toUserId: loggedInUser._id,
+        fromUserId: loggedInUser._id,
         status: "interested",
       });
       if (!connectionRequest) {
