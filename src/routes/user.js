@@ -61,6 +61,11 @@ userRouter.get("/feed", userAuth, async (req, res) => {
     // should not see ignored people
     // alredy send the connection request
 
+    const page = req.query.page || 1;
+    const limit = req.query.limit || 5;
+    const skip = (page - 1) * limit;
+    console.log(page);
+    console.log(limit);
     const loggedInUser = req.user;
 
     const connectionRequests = await ConnectionRequest.find({
@@ -73,13 +78,16 @@ userRouter.get("/feed", userAuth, async (req, res) => {
       hideUsersFromFeed.add(req.fromUserId);
       hideUsersFromFeed.add(req.toUserId);
     });
-    console.log(hideUsersFromFeed);
+    // console.log(hideUsersFromFeed);
     const users = await User.find({
       $and: [
         { _id: { $nin: Array.from(hideUsersFromFeed) } },
         { _id: { $ne: loggedInUser._id } },
       ],
-    }).select(USER_SAFE_DATA);
+    })
+      .select(USER_SAFE_DATA)
+      .skip(skip)
+      .limit(limit);
     res.send(users);
   } catch (error) {
     res.status(400).json({ message: error.message });
