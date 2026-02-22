@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const connectionReqSchema = new mongoose.Schema(
+const ConnectionReqSchema = new mongoose.Schema(
   {
     fromUserId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -26,11 +26,11 @@ const connectionReqSchema = new mongoose.Schema(
   },
 );
 
-connectionReqSchema.index({ fromUserId: 1, toUserId: 1 });
+// connectionReqSchema.index({ fromUserId: 1, toUserId: 1 });
 
 const ConnectionRequest = mongoose.model(
   "ConnectionRequest",
-  connectionReqSchema,
+  ConnectionReqSchema,
 );
 
 module.exports = ConnectionRequest;
