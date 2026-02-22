@@ -53,7 +53,7 @@ const UserSchema = mongoose.Schema(
       //     throw new Error("Gender data is not valid");
       //   }
       // },
-      required: true,
+      // required: true,
     },
     photoUrl: {
       type: String,
