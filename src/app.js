@@ -1,5 +1,6 @@
 const express = require("express");
 const connectDB = require("./config/database");
+require("dotenv").config();
 const cors = require("cors");
 const User = require("./models/user");
 const jwt = require("jsonwebtoken");
